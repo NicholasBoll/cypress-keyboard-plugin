@@ -1,0 +1,30 @@
+{
+  "name": "cypress-enter-plugin",
+  "version": "1.0.0",
+  "description": "Cypress plugin to activate buttons and anchors when typing {enter}",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicholasBoll/cypress-enter-plugin.git"
+  },
+  "keywords": [
+    "cypress",
+    "plugin",
+    "enter",
+    "type",
+    "button",
+    "anchor"
+  ],
+  "author": "Nicholas Boll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NicholasBoll/cypress-enter-plugin/issues"
+  },
+  "homepage": "https://github.com/NicholasBoll/cypress-enter-plugin#readme",
+  "devDependencies": {
+    "cypress": "^4.12.1"
+  }
+}
