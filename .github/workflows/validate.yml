@@ -15,5 +15,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Download dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: ▶️ Run test
+        run: npm run test
