@@ -1,14 +1,15 @@
 {
-  "name": "cypress-enter-plugin",
+  "name": "cypress-keyboard-plugin",
   "version": "1.0.0",
-  "description": "Cypress plugin to activate buttons and anchors when typing {enter}",
+  "description": "Cypress plugin to activate default actions with cy.type",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cypress:open": "cypress open",
+    "test": "cypress run"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NicholasBoll/cypress-enter-plugin.git"
+    "url": "git+https://github.com/NicholasBoll/cypress-keyboard-plugin.git"
   },
   "keywords": [
     "cypress",
@@ -16,15 +17,17 @@
     "enter",
     "type",
     "button",
+    "input",
+    "keyboard",
     "anchor"
   ],
   "author": "Nicholas Boll",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NicholasBoll/cypress-enter-plugin/issues"
+    "url": "https://github.com/NicholasBoll/cypress-keyboard-plugin/issues"
   },
-  "homepage": "https://github.com/NicholasBoll/cypress-enter-plugin#readme",
+  "homepage": "https://github.com/NicholasBoll/cypress-keyboard-plugin#readme",
   "devDependencies": {
-    "cypress": "^4.12.1"
+    "cypress": "^6.1.0"
   }
 }

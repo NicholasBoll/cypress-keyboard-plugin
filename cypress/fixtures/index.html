@@ -9,12 +9,304 @@
   </head>
 
   <body>
-    <button id="button">My Button</button>
-    <output id="output"></output>
-    <script>
-      document.getElementById("button").addEventListener("click", function () {
-        document.getElementById("output").textContent = "Clicked!";
-      });
-    </script>
+    <p>
+      This is a series of scenarios to test the keyboard accessibility of
+      Cypress commands. Cypress uses synthetic events and therefore can only
+      fire untrusted events. See
+      <a href="https://www.w3.org/TR/uievents/#trusted-events"
+        >W3C Trusted Events</a
+      >
+      for more details.
+    </p>
+    <!-- button -->
+    <div>
+      <p>
+        This button should work by clicking, pressing the space bar key, or
+        pressing the enter key.
+      </p>
+      <button id="working-button">My Button</button>
+      <output id="working-button-output"></output>
+      <script>
+        document
+          .getElementById("working-button")
+          .addEventListener("click", function () {
+            document.getElementById("working-button-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div>
+      <p>
+        This button has an explicit keydown handler to click the button with the
+        keydown handler calling `event.preventDefault()`. The end result is
+        still the desired behavior.
+      </p>
+      <button id="modified-button">My Button</button>
+      <output id="modified-button-output"></output>
+      <script>
+        document
+          .getElementById("modified-button")
+          .addEventListener("keydown", function (event) {
+            if (event.key === " " || event.key === "Enter") {
+              document.getElementById("modified-button").click();
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("modified-button")
+          .addEventListener("click", function (event) {
+            document.getElementById("modified-button-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div id="broken-button-parent">
+      <p>
+        This is a button with a parent that has a <code>keydown</code> event
+        handler that uses <code>event.preventDefault()</code>. This will prevent
+        the enter and space bar keys from triggering the "click" event as a
+        default action.
+      </p>
+      <button id="broken-button">My Button</button>
+      <output id="broken-button-output"></output>
+      <script>
+        document
+          .getElementById("broken-button-parent")
+          .addEventListener("keydown", function (event) {
+            // this will break
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("broken-button")
+          .addEventListener("click", function () {
+            document.getElementById("broken-button-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+
+    <!-- anchor -->
+    <div>
+      <p>
+        This anchor should work by clicking, or by pressing the space bar key.
+      </p>
+      <a id="working-anchor" href="javascript: void(0);">My anchor</a>
+      <output id="working-anchor-output"></output>
+      <script>
+        document
+          .getElementById("working-anchor")
+          .addEventListener("click", function (event) {
+            document.getElementById("working-anchor-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div>
+      <p>
+        This anchor has an explicit keydown handler to click the anchor with the
+        keydown handler calling `event.preventDefault()`. The end result is
+        still the desired behavior.
+      </p>
+      <a id="modified-anchor" href="javascript: void(0);">My anchor</a>
+      <output id="modified-anchor-output"></output>
+      <script>
+        document
+          .getElementById("modified-anchor")
+          .addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              document.getElementById("modified-anchor").click();
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("modified-anchor")
+          .addEventListener("click", function (event) {
+            document.getElementById("modified-anchor-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div id="broken-anchor-parent">
+      <p>
+        This is a a with a parent that has a <code>keydown</code> event handler
+        that uses <code>event.preventDefault()</code>. This will prevent the
+        enter and space bar keys from triggering the "click" event as a default
+        action.
+      </p>
+      <a id="broken-anchor" href="javascript:void(0);">My anchor</a>
+      <output id="broken-anchor-output"></output>
+      <script>
+        document
+          .getElementById("broken-anchor-parent")
+          .addEventListener("keydown", function (event) {
+            // this will break
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("broken-anchor")
+          .addEventListener("click", function () {
+            document.getElementById("broken-anchor-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+
+    <!-- checkbox -->
+    <div>
+      <p>
+        This checkbox should work by clicking or by pressing the space bar key.
+      </p>
+      <label>
+        My Checkbox
+        <input type="checkbox" id="working-checkbox" />
+      </label>
+      <output id="working-checkbox-output"></output>
+      <script>
+        document
+          .getElementById("working-checkbox")
+          .addEventListener("click", function () {
+            document.getElementById("working-checkbox-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div>
+      <p>
+        This checkbox has an explicit keydown handler to click the checkbox with
+        the keydown handler calling `event.preventDefault()`. The end result is
+        still the desired behavior.
+      </p>
+      <label>
+        My Checkbox
+        <input type="checkbox" id="modified-checkbox" />
+      </label>
+      <output id="modified-checkbox-output"></output>
+      <script>
+        document
+          .getElementById("modified-checkbox")
+          .addEventListener("keydown", function (event) {
+            if (event.key === " ") {
+              document.getElementById("modified-checkbox").click();
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("modified-checkbox")
+          .addEventListener("click", function (event) {
+            document.getElementById("modified-checkbox-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div id="broken-checkbox-parent">
+      <p>
+        This is a checkbox with a parent that has a <code>keydown</code> event
+        handler that uses <code>event.preventDefault()</code>. This will prevent
+        the enter and space bar keys from triggering the "click" event as a
+        default action.
+      </p>
+      <label>
+        My Checkbox
+        <input type="checkbox" id="broken-checkbox" />
+      </label>
+      <output id="broken-checkbox-output"></output>
+      <script>
+        document
+          .getElementById("broken-checkbox-parent")
+          .addEventListener("keydown", function (event) {
+            // this will break
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("broken-checkbox")
+          .addEventListener("click", function () {
+            document.getElementById("broken-checkbox-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+
+    <!-- radio -->
+    <div>
+      <p>
+        This radio should work by clicking or by pressing the space bar key.
+      </p>
+      <label>
+        My Radio
+        <input type="radio" id="working-radio" />
+      </label>
+      <output id="working-radio-output"></output>
+      <script>
+        document
+          .getElementById("working-radio")
+          .addEventListener("click", function () {
+            document.getElementById("working-radio-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div>
+      <p>
+        This radio has an explicit keydown handler to click the radio with the
+        keydown handler calling `event.preventDefault()`. The end result is
+        still the desired behavior.
+      </p>
+      <label>
+        My Radio
+        <input type="radio" id="modified-radio" />
+      </label>
+      <output id="modified-radio-output"></output>
+      <script>
+        document
+          .getElementById("modified-radio")
+          .addEventListener("keydown", function (event) {
+            if (event.key === " ") {
+              document.getElementById("modified-radio").click();
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("modified-radio")
+          .addEventListener("click", function (event) {
+            document.getElementById("modified-radio-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
+    <div id="broken-radio-parent">
+      <p>
+        This is a radio with a parent that has a <code>keydown</code> event
+        handler that uses <code>event.preventDefault()</code>. This will prevent
+        the enter and space bar keys from triggering the "click" event as a
+        default action.
+      </p>
+      <label>
+        My Radio
+        <input type="radio" id="broken-radio" />
+      </label>
+      <output id="broken-radio-output"></output>
+      <script>
+        document
+          .getElementById("broken-radio-parent")
+          .addEventListener("keydown", function (event) {
+            // this will break
+            if (event.key === " " || event.key === "Enter") {
+              event.preventDefault();
+            }
+          });
+        document
+          .getElementById("broken-radio")
+          .addEventListener("click", function () {
+            document.getElementById("broken-radio-output").textContent =
+              "Clicked!";
+          });
+      </script>
+    </div>
   </body>
 </html>
