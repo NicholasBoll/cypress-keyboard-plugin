@@ -16,7 +16,7 @@ function createDefaultPreventedError(subject) {
  * @param {*} originalFn
  * @param {JQuery} subject
  * @param {string} text
- * @param {Cypress.TypeOptions} options
+ * @param {Cypress.TypeOptions} [options]
  */
 function overrideType(originalFn, subject, text, options) {
   /**@type KeyboardEvent Keep track of the keydown event that was called by cy.type */
@@ -42,6 +42,9 @@ function overrideType(originalFn, subject, text, options) {
   return originalFn(subject, text, options)
     .then((subject) => {
       const tagName = subject[0].tagName.toLowerCase();
+      options = Cypress._.defaults(options, {
+        force: false,
+      });
 
       // check space bar key for `input[type=checkbox]` and `input[type=radio]`
       if (
@@ -52,7 +55,7 @@ function overrideType(originalFn, subject, text, options) {
       ) {
         if (subject.prop("checked") === additionalData["checked"]) {
           // The checked state did not flip. There are no key handlers to flip the state explicitly
-          if (keyDownEvent.defaultPrevented && options?.force !== true) {
+          if (keyDownEvent.defaultPrevented && options.force !== true) {
             // If we got here, the checked state did not flip and someone called
             // `event.preventDefault()` on our keydown handler which will prevent the space bar key
             // for a real user
@@ -73,7 +76,7 @@ function overrideType(originalFn, subject, text, options) {
           // The click handler wasn't called. This is either because `cy.type()` was called on an
           // unfocused element which always causes a click, or not explicit handling of the enter
           // key is handled by the element
-          if (keyDownEvent.defaultPrevented && options?.force !== true) {
+          if (keyDownEvent.defaultPrevented && options.force !== true) {
             // If we got here, a click didn't happen and a keydown event handler called
             // `event.preventDefault()` which prevents the element from being activated by a read
             // user
