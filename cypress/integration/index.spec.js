@@ -1,6 +1,6 @@
 describe("plugin", () => {
   beforeEach(() => {
-    cy.visit("cypress/fixtures/index.html");
+    cy.visit("/cypress/fixtures/index.html");
   });
 
   describe("buttons", () => {
@@ -104,26 +104,27 @@ describe("plugin", () => {
 
   describe("checkboxes", () => {
     it("should trigger the click action when clicking the working checkbox example", () => {
-      cy.get("#working-checkbox").click();
-      cy.get("#working-checkbox").should("be.checked");
+      cy.get("#working-checkbox").click().should("be.checked");
       cy.get("#working-checkbox-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the working checkbox example", () => {
-      cy.get("#working-checkbox").focus().type(" ");
-      cy.get("#working-checkbox").should("be.checked");
+      cy.get("#working-checkbox").focus().type(" ").should("be.checked");
       cy.get("#working-checkbox-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the modified checkbox example", () => {
-      cy.get("#modified-checkbox").focus().type(" ");
-      cy.get("#modified-checkbox").should("be.checked");
+      cy.get("#modified-checkbox").focus().type(" ").should("be.checked");
       cy.get("#modified-checkbox-output").should("contain", "Clicked!");
     });
 
+    it("should trigger the click action when using the space bar key on the eventually checkbox example", () => {
+      cy.get("#eventually-checkbox").focus().type(" ").should("be.checked");
+      cy.get("#eventually-checkbox-output").should("contain", "Clicked!");
+    });
+
     it("should trigger the click action when clicking the broken checkbox example", () => {
-      cy.get("#broken-checkbox").click();
-      cy.get("#broken-checkbox").should("be.checked");
+      cy.get("#broken-checkbox").click().should("be.checked");
       cy.get("#broken-checkbox-output").should("contain", "Clicked!");
     });
 
@@ -133,40 +134,37 @@ describe("plugin", () => {
         done();
       });
 
-      cy.get("#broken-checkbox").focus().type(" ");
-      cy.get("#broken-checkbox").should("be.checked");
+      cy.get("#broken-checkbox").focus().type(" ").should("be.checked");
       cy.get("#broken-checkbox-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the broken checkbox example with force: true", () => {
-      cy.get("#broken-checkbox").focus().type(" ", { force: true });
-      cy.get("#broken-checkbox").should("be.checked");
+      cy.get("#broken-checkbox")
+        .focus()
+        .type(" ", { force: true })
+        .should("be.checked");
       cy.get("#broken-checkbox-output").should("contain", "Clicked!");
     });
   });
 
   describe("radios", () => {
     it("should trigger the click action when clicking the working radio example", () => {
-      cy.get("#working-radio").click();
-      cy.get("#working-radio").should("be.checked");
+      cy.get("#working-radio").click().should("be.checked");
       cy.get("#working-radio-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the working radio example", () => {
-      cy.get("#working-radio").focus().type(" ");
-      cy.get("#working-radio").should("be.checked");
+      cy.get("#working-radio").focus().type(" ").should("be.checked");
       cy.get("#working-radio-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the modified radio example", () => {
-      cy.get("#modified-radio").focus().type(" ");
-      cy.get("#modified-radio").should("be.checked");
+      cy.get("#modified-radio").focus().type(" ").should("be.checked");
       cy.get("#modified-radio-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when clicking the broken radio example", () => {
-      cy.get("#broken-radio").click();
-      cy.get("#broken-radio").should("be.checked");
+      cy.get("#broken-radio").click().should("be.checked");
       cy.get("#broken-radio-output").should("contain", "Clicked!");
     });
 
@@ -176,14 +174,15 @@ describe("plugin", () => {
         done();
       });
 
-      cy.get("#broken-radio").focus().type(" ");
-      cy.get("#broken-radio").should("be.checked");
+      cy.get("#broken-radio").focus().type(" ").should("be.checked");
       cy.get("#broken-radio-output").should("contain", "Clicked!");
     });
 
     it("should trigger the click action when using the space bar key on the broken radio example with force: true", () => {
-      cy.get("#broken-radio").focus().type(" ", { force: true });
-      cy.get("#broken-radio").should("be.checked");
+      cy.get("#broken-radio")
+        .focus()
+        .type(" ", { force: true })
+        .should("be.checked");
       cy.get("#broken-radio-output").should("contain", "Clicked!");
     });
   });

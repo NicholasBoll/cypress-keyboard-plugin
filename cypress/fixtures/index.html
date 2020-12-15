@@ -202,6 +202,39 @@
           });
       </script>
     </div>
+    <div>
+      <p>
+        This checkbox has an explicit keydown handler to click the checkbox with
+        the keydown handler calling `event.preventDefault()`. The end result is
+        still the desired behavior.
+      </p>
+      <label>
+        My Checkbox
+        <input type="checkbox" id="eventually-checkbox" />
+      </label>
+      <output id="eventually-checkbox-output"></output>
+      <script>
+        document
+          .getElementById("eventually-checkbox")
+          .addEventListener("input", function (event) {
+            console.log("input", event);
+            const checkbox = event.currentTarget;
+            // uncheck for now - we'll check it again later
+            const checkedStatus = checkbox.checked;
+            checkbox.checked = !checkedStatus;
+
+            setTimeout(() => {
+              checkbox.checked = checkedStatus;
+              document.getElementById(
+                "eventually-checkbox-output"
+              ).textContent = "Clicked!";
+            }, 100);
+          });
+        document
+          .getElementById("eventually-checkbox")
+          .addEventListener("click", function (event) {});
+      </script>
+    </div>
     <div id="broken-checkbox-parent">
       <p>
         This is a checkbox with a parent that has a <code>keydown</code> event

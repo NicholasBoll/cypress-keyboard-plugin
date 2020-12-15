@@ -19,28 +19,30 @@ function createDefaultPreventedError(subject) {
  * @param {Cypress.TypeOptions} [options]
  */
 function overrideType(originalFn, subject, text, options) {
-  /**@type KeyboardEvent Keep track of the keydown event that was called by cy.type */
-  let keyDownEvent;
   /**@type MouseEvent Keep if a click event was called */
   let clickEvent;
 
-  function keyDownHandler(event) {
-    keyDownEvent = event;
-  }
   function clickHandler(event) {
     clickEvent = event;
   }
-
-  subject[0].addEventListener("keydown", keyDownHandler);
-  subject[0].addEventListener("click", clickHandler);
 
   /** Additional data about the subject before `cy.type()` is called */
   const additionalData = {
     checked: subject.prop("checked"),
   };
 
-  return originalFn(subject, text, options)
-    .then((subject) => {
+  /**
+   * @param {KeyboardEvent} keyDownEvent
+   */
+  function keyDownHandler(keyDownEvent) {
+    // `setTimeout` ensures this `keydown` handler is run after all other `keydown` listeners are run.
+    // Cypress actions have 2 internal async loops
+    // 1. Ensure no error was thrown - retry if there was an error
+    // 2. Ensure upcoming assertions pass enter a retry loop until the assertion does pass
+    // We have no way to hook into the retry loop of the original `cy.type`, so we'll do so via the
+    // `keydown` event handler. This async handler allows checkboxes that _eventually_ get checked
+    // after a click to work (like a React checkbox that shows checked after communicating to a server)
+    setTimeout(function () {
       const tagName = subject[0].tagName.toLowerCase();
       options = Cypress._.defaults(options, {
         force: false,
@@ -87,12 +89,15 @@ function overrideType(originalFn, subject, text, options) {
         }
       }
 
-      return subject;
-    })
-    .finally(() => {
       subject[0].removeEventListener("keydown", keyDownHandler);
       subject[0].removeEventListener("click", clickHandler);
-    });
+    }, 50); // 50ms is the default wait for all Cypress async processes
+  }
+
+  subject[0].addEventListener("keydown", keyDownHandler);
+  subject[0].addEventListener("click", clickHandler);
+
+  return originalFn(subject, text, options);
 }
 
 Cypress.Commands.overwrite("type", overrideType);
