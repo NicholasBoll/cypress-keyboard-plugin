@@ -74,10 +74,20 @@
           .getElementById("broken-button-parent")
           .addEventListener("keydown", function (event) {
             // this will break
-            if (event.key === " " || event.key === "Enter") {
+            if (event.key === "Enter") {
               event.preventDefault();
             }
           });
+
+        document
+          .getElementById("broken-button-parent")
+          .addEventListener("keyup", function (event) {
+            // this will break
+            if (event.key === " ") {
+              event.preventDefault();
+            }
+          });
+
         document
           .getElementById("broken-button")
           .addEventListener("click", function () {
@@ -142,7 +152,7 @@
           .getElementById("broken-anchor-parent")
           .addEventListener("keydown", function (event) {
             // this will break
-            if (event.key === " " || event.key === "Enter") {
+            if (event.key === "Enter") {
               event.preventDefault();
             }
           });
@@ -188,7 +198,7 @@
       <script>
         document
           .getElementById("modified-checkbox")
-          .addEventListener("keydown", function (event) {
+          .addEventListener("keyup", function (event) {
             if (event.key === " ") {
               document.getElementById("modified-checkbox").click();
               event.preventDefault();
@@ -250,9 +260,9 @@
       <script>
         document
           .getElementById("broken-checkbox-parent")
-          .addEventListener("keydown", function (event) {
+          .addEventListener("keyup", function (event) {
             // this will break
-            if (event.key === " " || event.key === "Enter") {
+            if (event.key === " ") {
               event.preventDefault();
             }
           });
@@ -298,7 +308,7 @@
       <script>
         document
           .getElementById("modified-radio")
-          .addEventListener("keydown", function (event) {
+          .addEventListener("keyup", function (event) {
             if (event.key === " ") {
               document.getElementById("modified-radio").click();
               event.preventDefault();
@@ -327,7 +337,7 @@
       <script>
         document
           .getElementById("broken-radio-parent")
-          .addEventListener("keydown", function (event) {
+          .addEventListener("keyup", function (event) {
             // this will break
             if (event.key === " " || event.key === "Enter") {
               event.preventDefault();
